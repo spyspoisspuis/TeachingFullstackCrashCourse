@@ -44,3 +44,22 @@ func (u *UsecaseImpl) InsertUser(userModel *models.Users) error {
 
 	return nil
 }
+
+func (u *UsecaseImpl) GetAllUser() ([]models.DisplayUser, error) {
+	// get all user from db
+	users, err := u.Repository.GetAllUser()
+	if err != nil {
+		return nil, err
+	}
+
+	// populate model field
+	var userModels []models.DisplayUser
+	for _, user := range users {
+		userModels = append(userModels, models.DisplayUser{
+			Username: user.Username,
+			Password: user.Password,
+		})
+	}
+
+	return userModels, nil
+}

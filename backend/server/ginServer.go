@@ -8,6 +8,7 @@ import (
 	"backend/users/usecases"
 	"fmt"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
 
@@ -26,6 +27,10 @@ func NewGinServer(cfg *config.Config, db *database.Database) Server {
 }
 
 func (g *ginServer) Start() {
+	config := cors.DefaultConfig()
+	config.AllowAllOrigins = true // normally set allow only frontend 
+	config.AllowHeaders = []string{"Origin", "Content-Length", "Content-Type", "Authorization"}
+	g.App.Use(cors.New(config))
 	g.ininitializedUserHttpHandlers()
 	g.App.Run(fmt.Sprintf(":%d", g.Cfg.App.Port))
 }
@@ -38,4 +43,5 @@ func (g *ginServer) ininitializedUserHttpHandlers() {
 
 	userRoutes := g.App.Group("/users")
 	userRoutes.POST("/", handler.InsertUser)
+	userRoutes.GET("/", handler.GetAllUser)
 }

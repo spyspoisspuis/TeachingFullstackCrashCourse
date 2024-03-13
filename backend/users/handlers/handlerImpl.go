@@ -33,3 +33,13 @@ func (h *HandlerImpl) InsertUser(c *gin.Context) {
 
 	c.JSON(http.StatusCreated, gin.H{"message": "User has been created"})
 }
+
+func (h *HandlerImpl) GetAllUser(c *gin.Context) {
+	users, err := h.usecase.GetAllUser()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"users": users})
+}

@@ -23,3 +23,14 @@ func (p *postgresRepository) InsertUser(userEntity *entities.Users) error {
 
 	return nil
 }
+
+func (p *postgresRepository) GetAllUser() ([]entities.Users, error) {
+	var users []entities.Users
+	result := p.db.Find(&users)
+
+	if result.Error != nil {
+		return nil, result.Error
+	}
+
+	return users, nil
+}
