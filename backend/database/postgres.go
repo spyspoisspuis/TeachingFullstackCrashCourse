@@ -27,7 +27,6 @@ func NewPostgresDatabase(cfg *config.Config) Database {
 		cfg.Db.Sslmode,
 		cfg.Db.Timezone,
 	)
-	log.Println("With config", dsn)
 
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
